@@ -149,7 +149,7 @@ this one was pretty straight forward. only mistake I did was I thought this was 
 
 ## Solution:
 
-![assembly to C](image.<img width="1521" height="747" alt="Screenshot 2025-10-24 203804" src="https://github.com/user-attachments/assets/96fe9c71-0f56-4282-91b8-625e713214f6" />
+(image.<img width="1521" height="747" alt="Screenshot 2025-10-24 203804" src="https://github.com/user-attachments/assets/96fe9c71-0f56-4282-91b8-625e713214f6" />
 png)
 
 Since I do not understand assembly at all, I first used a online converter to turn the assembly code into C, then I understood how it works : 
@@ -306,4 +306,5 @@ None
 
 
 ***
+
 
