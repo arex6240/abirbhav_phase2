@@ -1,4 +1,4 @@
-# 1. Trivial Flag Transfer Protocol
+<img width="1367" height="934" alt="Screenshot 2025-10-25 021601" src="https://github.com/user-attachments/assets/cfd748ac-45bd-4dfc-b7bf-b525635ee820" /># 1. Trivial Flag Transfer Protocol
 
 > Figure out how they moved the flag.
 
@@ -6,11 +6,11 @@
 
 First, I unload the file inside wireshark 4.4.2  
 
-![alt text](<Screenshot 2025-10-24 234253.png>)  
+<img width="1919" height="1023" alt="Screenshot 2025-10-24 234253" src="https://github.com/user-attachments/assets/39d15889-3c52-4b74-878f-660b75b07fc7" />
 
 I exported the TFTP object list next 
 
-![alt text](<Screenshot 2025-10-25 003105.png>)
+<img width="741" height="543" alt="Screenshot 2025-10-25 003105" src="https://github.com/user-attachments/assets/3b3e12be-94dc-4375-b5d2-ccf3cc78ab16" />
 
 
 inside it I find instruction.txt and plan, both of which are ciphers which when diciphered translates to 
@@ -25,8 +25,9 @@ I USED THE PROGRAM AND HID IT WITH - DUEDILIGENCE. CHECK OUT THE PHOTOS
 
 I then explored inside `program.deb` using WinRAR. 
 
-![alt text](<Screenshot 2025-10-25 004729.png>)
-![alt text](<Screenshot 2025-10-25 004738.png>)
+<img width="785" height="403" alt="Screenshot 2025-10-25 004729" src="https://github.com/user-attachments/assets/5280df17-9ed0-42f6-bdf2-105d088bb978" />
+
+<img width="1103" height="721" alt="Screenshot 2025-10-25 004738" src="https://github.com/user-attachments/assets/eb593e3a-1fb1-4826-92b2-4a80812ae22f" />
 
 I noticed that steghide was used here which was likely used to hide data inside those 3 images. so I run steghide on each individual image using the passphrase `DUEDILIGENCE` (as it was diciphered earlier). Then I finally receive the flag
 
@@ -86,28 +87,30 @@ trying to find data/ fragments of data inside each packet has been a waste of ti
 ## Solution:
 
 Given file has no extension attached with it. So i use hexed.it to quickly know the file type which is windows bitmap (BMP File).
-![alt text](<Screenshot 2025-10-25 013347.png>)
+<Screenshot 2025-10-25<img width="1046" height="892" alt="Screenshot 2025-10-25 013347" src="https://github.com/user-attachments/assets/b0afc2e9-16c2-414c-b6e8-0bc9d5f523c6" />
 
 Even after adding the extension the file wasnt opening, so I went to check out its hex again, and compared its hex side by side with 3 other bmp files with correct hex. Here I compared the fields which seemed to be commonly same for the working bmp files but broken for the test file. So I accordingly change the fields to obtain a bmp file which DOES open but still has some issues.
 
-![wrong hex](<Screenshot 2025-10-25 015032.png>)
+<Screenshot 2025-10<img width="681" height="277" alt="Screenshot 2025-10-25 014937" src="https://github.com/user-attachments/assets/0a499740-0461-4057-89ed-2d8daa2e2487" />
 broken hex
 
-![ref1](<Screenshot 2025-10-25 014948.png>)
+<Screenshot 2025-10-2<img width="689" height="318" alt="Screenshot 2025-10-25 014943" src="https://github.com/user-attachments/assets/97136946-48ec-4f5e-8cb6-72f4a88fe27b" />
 ref1
 
-![ref2](<Screenshot 2025-10-25 014943.png>)
+<Screenshot 2025<img width="692" height="353" alt="Screenshot 2025-10-25 014948" src="https://github.com/user-attachments/assets/f438ddaa-a8c5-4876-ab00-297bebd29ea2" />
 ref2
 
-![ref3](<Screenshot 2025-10-25 014937.png>)
+<Screenshot<img width="673" height="335" alt="Screenshot 2025-10-25 014958" src="https://github.com/user-attachments/assets/d35e1b06-439a-4f0a-894d-de8902b38428" />
 ref3
 
-![fixed hex](<Screenshot 2025-10-25 014958.png>)
+<Screenshot 2025-10-2<img width="678" height="350" alt="Screenshot 2025-10-25 015032" src="https://github.com/user-attachments/assets/d3e1a6b8-d682-46d0-837b-45ea3fee2cdf" />
+
 fixed hex
 
 finally I get this image : 
 
-![fixed](image-3.png)
+<img width="1818" height="484" alt="Screenshot 2025-10-25 015816" src="https://github.com/user-attachments/assets/88640007-4252-4060-8d0c-933c54a8aad3" />
+-3.png)
 
 since this is a decoy there was furthermore to be done. This image looks like it has been cropped so I will try to uncrop the image
 
@@ -141,14 +144,16 @@ Megapixels                      : 0.347
 
 image height is 306 (which is 0x132 in hex) and width is 1134 (which is 0x46E in hex). So next I find where these values are in hexeditor
 
-![alt text](image-4.png)  
+ <img width="600" height="169" alt="Screenshot 2025-10-25 020903" src="https://github.com/user-attachments/assets/e881edf3-dac5-46f1-beae-32113c556f3b" />
+
 here are the hex values for the parameters (last 2 characters are coming before the earlier ones)
 
 so now I play with 0x132 (which controls the height to see at what height more information is revealed.)
 
 after multiple trial and errors at around 850 height (which in hex is 0x352) we get the final image.
 
-![alt text](image-5.png)
+<img width="1367" height="934" alt="Screenshot 2025-10-25 021601" src="https://github.com/user-attachments/assets/7c940f5c-601f-490d-a714-2ec4edbff8ca" />
+
 
 ## Flag:
 
