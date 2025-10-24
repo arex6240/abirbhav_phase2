@@ -149,7 +149,8 @@ this one was pretty straight forward. only mistake I did was I thought this was 
 
 ## Solution:
 
-![assembly to C](image.png)
+![assembly to C](image.<img width="1521" height="747" alt="Screenshot 2025-10-24 203804" src="https://github.com/user-attachments/assets/96fe9c71-0f56-4282-91b8-625e713214f6" />
+png)
 
 Since I do not understand assembly at all, I first used a online converter to turn the assembly code into C, then I understood how it works : 
 The C program has two functions, func and main. func does some bitwise operation to finally attain the value 77 stored in temp. The function then subtracts input value x from 77 and returns this result to main and hence prints I win. So in main if the result equals zero (meaning the input value was 77), the program prints “You win!”, otherwise it prints “You Lose :(” . Then I finally convert 77 to hex, lowercase, no 0x, and 32 bits form for the flag.
@@ -271,7 +272,8 @@ int main() {
 }
 
 ```
-![alt text](image-2.png)
+![alt text](image<img width="1528" height="724" alt="Screenshot 2025-10-24 223141" src="https://github.com/user-attachments/assets/79f7f488-cc3b-4ecf-ae88-5857c079c340" />
+-2.png)
 
 The converted C code works like : for each character we type into the input, it compares it with a hardcoded string w.r.t its index. It also enforces that the password length is exactly 32 characters, orelse it would return false. Now the password obtaining logic works as follows -  
 i) for first 8 characters we have to copy the hardcoded string directly  
@@ -282,7 +284,8 @@ iv) for every other remaining index running in decending order now from 31 to 17
 
 Now, finally by applying the operations above we receive the final string which is `jU5t_a_s1mpl3_an4gr4m_4_u_c79a21`  
 
-![alt text](image-1.png)
+![alt text](image<img width="678" height="152" alt="Screenshot 2025-10-24 221229" src="https://github.com/user-attachments/assets/360428f1-d69c-4f0d-91a2-5beb3fef0482" />
+-1.png)
 ## Flag:
 
 ```
@@ -303,3 +306,4 @@ None
 
 
 ***
+
