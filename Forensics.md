@@ -1,4 +1,4 @@
-<img width="1367" height="934" alt="Screenshot 2025-10-25 021601" src="https://github.com/user-attachments/assets/cfd748ac-45bd-4dfc-b7bf-b525635ee820" /># 1. Trivial Flag Transfer Protocol
+# 1. Trivial Flag Transfer Protocol
 
 > Figure out how they moved the flag.
 
