@@ -171,7 +171,7 @@ Made alot of mistakes while trying to fix the hex values, so have to be more tho
 
 ## Resources:
 
-[hexed.it](https://hexed.it/)
+[hexed.it](https://hexed.it/)  
 Google Gemini (for learning purposes only)
 
 
@@ -183,32 +183,35 @@ Google Gemini (for learning purposes only)
 
 ## Solution:
 
-- Include as many steps as you can with your thought process
-- You **must** include images such as screenshots wherever relevant.
+In the hint it is mentioned to look into "How did pictures from the moon landing get sent back to Earth?", so did research on that and find out it was done by using SSTV cameras. 
 
-```
-put codes & terminal outputs here using triple backticks
+The given wav file is a SSTV broadcast signal 
 
-you may also use ```python for python codes for example
-```
+Then I use online SSTV to image converter to get the final image which contains the flag
+
+<img width="320" height="256" alt="decoded-image" src="https://github.com/user-attachments/assets/e5232300-2d71-4ec3-abcf-8e2fcbb3b11e" />
+
 
 ## Flag:
 
 ```
-picoCTF{}
+picoCTF{beep_boop_im_in_space}
 ```
 
 ## Concepts learnt:
 
-- Include the new topics you've come across and explain them in brief
-- 
+learnt that images can be transmitted using SSTV protocol and also how to retrieve the image from the signal
 
 ## Notes:
 
-- Include any alternate tangents you went on while solving the challenge, including mistakes & other solutions you found.
-- 
+Tried using ffmpeg to see if the metadata has the flag. Also tried using FL studio wave candy (i.e spectrogram) to see if the audio file is visually printing out any information on the frequency spectrum.
 
 ## Resources:
+
+[SSTV Audio signal to image converter](https://sstv-decoder.mathieurenaud.fr/)
+
+
+***
 
 - Include the resources you've referred to with links. [example hyperlink](https://google.com)
 
