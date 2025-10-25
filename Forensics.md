@@ -162,11 +162,11 @@ picoCTF{qu1t3_a_v13w_2020}
 
 ## Concepts learnt:
 
-usage of hex editor to compare and fix files and also change the characteristics of the file directly.
+Usage of hex editor to compare and fix files and also change the characteristics of the file directly.
 
 ## Notes:
 
-Made alot of mistakes while trying to fix the hex values, so have to be more thorough with that in the future
+Made alot of mistakes while trying to fix the hex values, so have to be more thorough with that in the future. Also tried an online tool to uncrop the image, which wasn't fruitful, so ended up changing the dimensions in the hex directly
 
 ## Resources:
 
