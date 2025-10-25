@@ -212,7 +212,3 @@ Tried using ffmpeg to see if the metadata has the flag. Also tried using FL stud
 
 ***
 
-- Include the resources you've referred to with links. [example hyperlink](https://google.com)
-
-
-***
