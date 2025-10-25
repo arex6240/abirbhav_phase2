@@ -87,32 +87,32 @@ trying to find data/ fragments of data inside each packet has been a waste of ti
 ## Solution:
 
 Given file has no extension attached with it. So i use hexed.it to quickly know the file type which is windows bitmap (BMP File).
-<Screenshot 2025-10-25<img width="1046" height="892" alt="Screenshot 2025-10-25 013347" src="https://github.com/user-attachments/assets/b0afc2e9-16c2-414c-b6e8-0bc9d5f523c6" />
+<img width="1046" height="892" alt="Screenshot 2025-10-25 013347" src="https://github.com/user-attachments/assets/b0afc2e9-16c2-414c-b6e8-0bc9d5f523c6" />
 
 Even after adding the extension the file wasnt opening, so I went to check out its hex again, and compared its hex side by side with 3 other bmp files with correct hex. Here I compared the fields which seemed to be commonly same for the working bmp files but broken for the test file. So I accordingly change the fields to obtain a bmp file which DOES open but still has some issues.
 
-<Screenshot 2025-10<img width="681" height="277" alt="Screenshot 2025-10-25 014937" src="https://github.com/user-attachments/assets/0a499740-0461-4057-89ed-2d8daa2e2487" />
+<img width="681" height="277" alt="Screenshot 2025-10-25 014937" src="https://github.com/user-attachments/assets/0a499740-0461-4057-89ed-2d8daa2e2487" />
 broken hex
 
-<Screenshot 2025-10-2<img width="689" height="318" alt="Screenshot 2025-10-25 014943" src="https://github.com/user-attachments/assets/97136946-48ec-4f5e-8cb6-72f4a88fe27b" />
+<img width="689" height="318" alt="Screenshot 2025-10-25 014943" src="https://github.com/user-attachments/assets/97136946-48ec-4f5e-8cb6-72f4a88fe27b" />
 ref1
 
-<Screenshot 2025<img width="692" height="353" alt="Screenshot 2025-10-25 014948" src="https://github.com/user-attachments/assets/f438ddaa-a8c5-4876-ab00-297bebd29ea2" />
+<img width="692" height="353" alt="Screenshot 2025-10-25 014948" src="https://github.com/user-attachments/assets/f438ddaa-a8c5-4876-ab00-297bebd29ea2" />
 ref2
 
-<Screenshot<img width="673" height="335" alt="Screenshot 2025-10-25 014958" src="https://github.com/user-attachments/assets/d35e1b06-439a-4f0a-894d-de8902b38428" />
+<img width="673" height="335" alt="Screenshot 2025-10-25 014958" src="https://github.com/user-attachments/assets/d35e1b06-439a-4f0a-894d-de8902b38428" />
 ref3
 
-<Screenshot 2025-10-2<img width="678" height="350" alt="Screenshot 2025-10-25 015032" src="https://github.com/user-attachments/assets/d3e1a6b8-d682-46d0-837b-45ea3fee2cdf" />
+<img width="678" height="350" alt="Screenshot 2025-10-25 015032" src="https://github.com/user-attachments/assets/d3e1a6b8-d682-46d0-837b-45ea3fee2cdf" />
 
 fixed hex
 
-finally I get this image : 
+finally I get this image :  
 
 <img width="1818" height="484" alt="Screenshot 2025-10-25 015816" src="https://github.com/user-attachments/assets/88640007-4252-4060-8d0c-933c54a8aad3" />
 -3.png)
 
-since this is a decoy there was furthermore to be done. This image looks like it has been cropped so I will try to uncrop the image
+since this is a decoy, there was furthermore to be done. This image looks like it has been cropped so I will try to uncrop the image
 
 ```
 abirbhav@ROG-STRIX-G713IE:/mnt/c/Users/pc/Desktop$ exiftool tunn3l_v1s10n.bmp
