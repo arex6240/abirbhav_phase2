@@ -92,20 +92,19 @@ Given file has no extension attached with it. So i use hexed.it to quickly know 
 Even after adding the extension the file wasnt opening, so I went to check out its hex again, and compared its hex side by side with 3 other bmp files with correct hex. Here I compared the fields which seemed to be commonly same for the working bmp files but broken for the test file. So I accordingly change the fields to obtain a bmp file which DOES open but still has some issues.
 
 <img width="681" height="277" alt="Screenshot 2025-10-25 014937" src="https://github.com/user-attachments/assets/0a499740-0461-4057-89ed-2d8daa2e2487" />
-broken hex
-
-<img width="689" height="318" alt="Screenshot 2025-10-25 014943" src="https://github.com/user-attachments/assets/97136946-48ec-4f5e-8cb6-72f4a88fe27b" />
 ref1
 
-<img width="692" height="353" alt="Screenshot 2025-10-25 014948" src="https://github.com/user-attachments/assets/f438ddaa-a8c5-4876-ab00-297bebd29ea2" />
+<img width="689" height="318" alt="Screenshot 2025-10-25 014943" src="https://github.com/user-attachments/assets/97136946-48ec-4f5e-8cb6-72f4a88fe27b" />
 ref2
 
-<img width="673" height="335" alt="Screenshot 2025-10-25 014958" src="https://github.com/user-attachments/assets/d35e1b06-439a-4f0a-894d-de8902b38428" />
+<img width="692" height="353" alt="Screenshot 2025-10-25 014948" src="https://github.com/user-attachments/assets/f438ddaa-a8c5-4876-ab00-297bebd29ea2" />
 ref3
 
-<img width="678" height="350" alt="Screenshot 2025-10-25 015032" src="https://github.com/user-attachments/assets/d3e1a6b8-d682-46d0-837b-45ea3fee2cdf" />
-
+<img width="673" height="335" alt="Screenshot 2025-10-25 014958" src="https://github.com/user-attachments/assets/d35e1b06-439a-4f0a-894d-de8902b38428" />
 fixed hex
+
+<img width="678" height="350" alt="Screenshot 2025-10-25 015032" src="https://github.com/user-attachments/assets/d3e1a6b8-d682-46d0-837b-45ea3fee2cdf" />
+broken hex
 
 finally I get this image :  
 
