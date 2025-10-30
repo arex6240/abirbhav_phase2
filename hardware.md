@@ -13,7 +13,8 @@ now for the given setup I see 36 inputs, but the given binary representation onl
 
 now we take this input and solve the logic gate. 
 
-![alt text](<images/logic gate soln.jpg>)
+<img width="798" height="1280" alt="image" src="https://github.com/user-attachments/assets/f7bb1868-8290-48ad-b756-ea47f5f00450" />
+
 
 So the output is 100010011000
 
@@ -45,17 +46,22 @@ A lot of patience to solve so many logic gates lol
 
 Here in the google drive folder we are provided with a `challenge.sal` file. On deeper analysis I got to know that this file can be read by the software `Saleae Logic 2`. After I import the file inside the software I was greeted with a interface like this:  
 
-![alt text](image-2.png)
+<img width="1919" height="1028" alt="image" src="https://github.com/user-attachments/assets/86ae6b06-4e34-4502-a137-28e7d295746f" />
+
 
 Here I notice that only channel which contains a datastream is `D3`. So therefore I run an analyser on that stream, specifically the Async Serial in the following settings: 
 
-![alt text](image-3.png)
+<img width="523" height="571" alt="image" src="https://github.com/user-attachments/assets/03ae64b8-4575-45de-b25e-bcbe6c9c8d3d" />
+
 
 Next I see the terminal for the following output : 
 
-![alt text](image-4.png)
-![alt text](image-5.png)
-![alt text](image-6.png)
+<img width="532" height="781" alt="image" src="https://github.com/user-attachments/assets/555347b3-c559-4102-b71a-3ca5a1e05ccb" />
+
+<img width="517" height="732" alt="image" src="https://github.com/user-attachments/assets/f2521edb-6b81-4a9c-8dc2-0c31bec3a211" />
+
+<img width="507" height="547" alt="image" src="https://github.com/user-attachments/assets/fdce78f6-d6e5-4ee5-b1ec-4f3bd541b047" />
+
 
 The flag is clearly visible here which is : `FCSC{b1dee4eeadf6c4e60aeb142b0b486344e64b12b40d1046de95c89ba5e23a9925}`
 
@@ -176,7 +182,8 @@ else:
 ```
 Therefore I get the flag
 
-![alt text](image-7.png)
+<img width="633" height="537" alt="image" src="https://github.com/user-attachments/assets/9fd5ad4a-417e-4357-a7fa-305036539314" />
+
 
 ## Flag:
 
@@ -191,5 +198,5 @@ learnt the basics of data encoding/decoding and got a practical intro to microco
 
 ## Resources:
 
-https://hexed.it/
+https://hexed.it/  
 https://github.com/NationalSecurityAgency/ghidra
