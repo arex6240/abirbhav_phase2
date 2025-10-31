@@ -149,6 +149,7 @@ learnt how to exploit RSA's multiplicative property to recover an encrypted pass
 ## Resources:
 
 [Breaking RSA - Computerphile](https://youtu.be/-ShwJqAalOk)
+https://crypto.stackexchange.com/questions/24880/how-multiplicative-property-of-rsa-can-be-exploited
 
 ***
 
