@@ -18,7 +18,7 @@ so first I tried putting the contents of password.enc into the decrypt part.
 As we see it didnt work.
 
 
-I noticed that the encryption was using RSA, and I could get encrypted values for small numbers like 1, 2, 3, and 4. so I wrote a simple script to collect these pairs. When the program encrypts a character like "1", it converts it to its ASCII hex value (0x31 = 49 in decimal), then encrypts it. Using the formula c = m^e mod N, I know that c - m^e should be a multiple of N and hence by taking the GCD of these differences, I can find N 
+I noticed that the encryption was using RSA (evident from the name of the challenge), and I could get encrypted values for small numbers like 1, 2, 3, and 4. so I wrote a simple script to collect these pairs. When the program encrypts a character like "1", it converts it to its ASCII hex value (0x31 = 49 in decimal), then encrypts it. Using the formula c = m^e mod N, I know that c - m^e should be a multiple of N and hence by taking the GCD of these differences, I can find N 
 ```
 abirbhav@ROG-STRIX-G713IE:/mnt/c/WINDOWS/system32$ nc titan.picoctf.net 53380
 *****************************************
