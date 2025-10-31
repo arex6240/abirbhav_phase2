@@ -1,29 +1,156 @@
 # 1. RSA oracle
 
 > An attacker was able to intercept communications between a bank and a fintech company. They managed to get the message (ciphertext) and the password that was used to encrypt the message.
-After some intensive reconassainance they found out that the bank has an oracle that was used to encrypt the password and can be found here nc titan.picoctf.net 52731. Decrypt the password and use it to decrypt the message. The oracle can decrypt anything except the password.
+After some intensive reconassainance they found out that the bank has an oracle that was used to encrypt the password and can be found here nc titan.picoctf.net 53380. Decrypt the password and use it to decrypt the message. The oracle can decrypt anything except the password.
 
 ## Solution:
 
+I first connect to nc titan.picoctf.net 53380 to see whats there  
 
+<img width="703" height="118" alt="image" src="https://github.com/user-attachments/assets/0bca39a7-3570-4903-bc17-7c118bab274c" />
+
+
+so first I tried putting the contents of password.enc into the decrypt part.
+
+<img width="1086" height="195" alt="image" src="https://github.com/user-attachments/assets/73e2da24-e3a5-49e8-a9db-7b6fb9d5050e" />
+
+
+As we see it didnt work.
+
+
+I noticed that the encryption was using RSA, and I could get encrypted values for small numbers like 1, 2, 3, and 4. I wrote a simple script to collect these pairs. When the oracle encrypts a character like "1", it converts it to its ASCII hex value (0x31 = 49 in decimal), then encrypts it. Using the formula c = m^e mod N, I know that c - m^e should be a multiple of N. By taking the GCD of these differences, I could figure out N.
+```
+abirbhav@ROG-STRIX-G713IE:/mnt/c/WINDOWS/system32$ nc titan.picoctf.net 53380
+*****************************************
+****************THE ORACLE***************
+*****************************************
+what should we do for you?
+E --> encrypt D --> decrypt.
+E
+enter text to encrypt (encoded length must be less than keysize): 1
+1
+
+encoded cleartext as Hex m: 31
+
+ciphertext (m ^ e mod n) 4374671741411819653095065203638363839705760144524191633605358134684143978321095859047126585649272872908765432040943055399247499744070371810470682366100689
+
+what should we do for you?
+E --> encrypt D --> decrypt.
+E
+enter text to encrypt (encoded length must be less than keysize): 2
+2
+
+encoded cleartext as Hex m: 32
+
+ciphertext (m ^ e mod n) 4707619883686427763240856106433203231481313994680729548861877810439954027216515481620077982254465432294427487895036699854948548980054737181231034760249505
+
+what should we do for you?
+E --> encrypt D --> decrypt.
+E
+enter text to encrypt (encoded length must be less than keysize): 3
+3
+
+encoded cleartext as Hex m: 33
+
+ciphertext (m ^ e mod n) 1998517197048216725617978890728205902760633363770165103499700157925986170022682604311921651991344892635565706489644418147980643978563559991322776155635395
+
+what should we do for you?
+E --> encrypt D --> decrypt.
+E
+enter text to encrypt (encoded length must be less than keysize): 4
+4
+
+encoded cleartext as Hex m: 34
+
+ciphertext (m ^ e mod n) 3993239489061277327472930109138093827255646312769901312414509207541733524779884801267968848884701166599834406248783129646083261476137481855550108336137485
+
+what should we do for you?
+E --> encrypt D --> decrypt.
+```
+Here's the code I used to calculate N:
+
+```
+import math
+
+pairs = [(49, 4374671741411819653095065203638363839705760144524191633605358134684143978321095859047126585649272872908765432040943055399247499744070371810470682366100689),
+         (50, 4707619883686427763240856106433203231481313994680729548861877810439954027216515481620077982254465432294427487895036699854948548980054737181231034760249505),
+         (51, 1998517197048216725617978890728205902760633363770165103499700157925986170022682604311921651991344892635565706489644418147980643978563559991322776155635395),
+         (52, 3993239489061277327472930109138093827255646312769901312414509207541733524779884801267968848884701166599834406248783129646083261476137481855550108336137485)]
+
+e = 65537
+N = 0
+for a, b in pairs:
+    diff = b - pow(a, e)
+    if N == 0:
+        N = diff
+    else:
+        N = math.gcd(N, diff)
+print("Value of N is:", N)
+```
+```
+Value of N is: 5507598452356422225755194020880876452588463543445995226287547479009566151786764261801368190219042978883834809435145954028371516656752643743433517325277971
+```
+
+After running this, I got the value of N. Now, since RSA is multiplicative, I could multiply the encrypted password by an encrypted value of 10, ask the oracle to decrypt it, and then divide the result by 10 to get the original password. The key property of RSA is: `Enc(m1) × Enc(m2) = Enc(m1 × m2) mod N`. Since I know N and e (which is always 65537 for RSA), I can calculate Enc(10) myself: `Enc(10) = 10^e mod N = 10^65537 mod N` Then I multiply: `Enc(password) × Enc(10) = Enc(password × 10) mod N`
+
+I did this in Python:
+
+```
+password = 4228273471152570993857755209040611143227336245190875847649142807501848960847851973658239485570030833999780269457000091948785164374915942471027917017922546
+x = 10
+
+enc_x = pow(x, e, N)
+
+enc = (password * enc_x) % N
+print(enc)
+```
+```
+2246069766871706352813845635896283550427369688733816925667491485440565630208989627729225212984783125979682554685302094776744105380218282706364056056744223
+```
+I sent this value to the oracle for decryption and got a hex string back.
+```
+Enter text to decrypt: 2246069766871706352813845635896283550427369688733816925667491485440565630208989627729225212984783125979682554685302094776744105380218282706364056056744223
+decrypted ciphertext as hex (c ^ d mod n): 21de3fe13e0
+decrypted ciphertext: !ÞÿáþÀ
+```
+
+I converted it to an integer, then divided by 10 using the modular inverse to get the password:
+
+```
+temp_hex = "21de3fe13e0"
+p2 = int(temp_hex, 16)
+inv = pow(x, -1, N)
+real = (p2 * inv) % N
+k = (N.bit_length() + 7) // 8
+password_bytes = real.to_bytes(k, 'big')
+password = password_bytes.lstrip(b'\x00').decode()
+print(password)
+```
+This gave me the password `60f50`, which I used to decrypt the secret file with OpenSSL:
+
+```
+openssl enc -aes-256-cbc -d -in secret.enc -pass pass:60f50
+```
+<img width="1018" height="86" alt="image" src="https://github.com/user-attachments/assets/5bc2816f-e223-4603-81a6-cd3b7bb3c3bd" />
+
+
+And I get the flag
 
 ## Flag:
 
 ```
-
+picoCTF{su((3ss_(r@ck1ng_r3@_60f50766}
 ```
 
 ## Concepts learnt:
 
+learnt how to exploit RSA's multiplicative property to recover an encrypted password and decrypt a protected message. I also learned to reconstruct the RSA modulus using GCD from plaintext ciphertext pairs. and alot of python coding :/
 
-
-## Notes:
-
-
+learnt about 
 
 ## Resources:
 
-
+[Breaking RSA - Computerphile](https://youtu.be/-ShwJqAalOk)
 
 ***
 
