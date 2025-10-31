@@ -18,7 +18,7 @@ so first I tried putting the contents of password.enc into the decrypt part.
 As we see it didnt work.
 
 
-I noticed that the encryption was using RSA, and I could get encrypted values for small numbers like 1, 2, 3, and 4. I wrote a simple script to collect these pairs. When the oracle encrypts a character like "1", it converts it to its ASCII hex value (0x31 = 49 in decimal), then encrypts it. Using the formula c = m^e mod N, I know that c - m^e should be a multiple of N. By taking the GCD of these differences, I could figure out N.
+I noticed that the encryption was using RSA, and I could get encrypted values for small numbers like 1, 2, 3, and 4. so I wrote a simple script to collect these pairs. When the program encrypts a character like "1", it converts it to its ASCII hex value (0x31 = 49 in decimal), then encrypts it. Using the formula c = m^e mod N, I know that c - m^e should be a multiple of N and hence by taking the GCD of these differences, I can find N 
 ```
 abirbhav@ROG-STRIX-G713IE:/mnt/c/WINDOWS/system32$ nc titan.picoctf.net 53380
 *****************************************
@@ -67,7 +67,7 @@ ciphertext (m ^ e mod n) 3993239489061277327472930109138093827255646312769901312
 what should we do for you?
 E --> encrypt D --> decrypt.
 ```
-Here's the code I used to calculate N:
+the code I used to calculate N:
 
 ```
 import math
@@ -91,7 +91,7 @@ print("Value of N is:", N)
 Value of N is: 5507598452356422225755194020880876452588463543445995226287547479009566151786764261801368190219042978883834809435145954028371516656752643743433517325277971
 ```
 
-After running this, I got the value of N. Now, since RSA is multiplicative, I could multiply the encrypted password by an encrypted value of 10, ask the oracle to decrypt it, and then divide the result by 10 to get the original password. The key property of RSA is: `Enc(m1) × Enc(m2) = Enc(m1 × m2) mod N`. Since I know N and e (which is always 65537 for RSA), I can calculate Enc(10) myself: `Enc(10) = 10^e mod N = 10^65537 mod N` Then I multiply: `Enc(password) × Enc(10) = Enc(password × 10) mod N`
+After running this, I got the value of N. Now since RSA is multiplicative, I could multiply the encrypted password by an encrypted value of 10, ask the program to decrypt it, and then divide the result by 10 to get the original password. The key property of RSA is: `Enc(m1) × Enc(m2) = Enc(m1 × m2) mod N`. Since I know N and e (which is always 65537 for RSA), I can calculate Enc(10) myself: `Enc(10) = 10^e mod N = 10^65537 mod N`and Then I multiply: `Enc(password) × Enc(10) = Enc(password × 10) mod N`
 
 I did this in Python:
 
@@ -107,7 +107,7 @@ print(enc)
 ```
 2246069766871706352813845635896283550427369688733816925667491485440565630208989627729225212984783125979682554685302094776744105380218282706364056056744223
 ```
-I sent this value to the oracle for decryption and got a hex string back.
+I sent this value to the program for decryption and got a hex string back.
 ```
 Enter text to decrypt: 2246069766871706352813845635896283550427369688733816925667491485440565630208989627729225212984783125979682554685302094776744105380218282706364056056744223
 decrypted ciphertext as hex (c ^ d mod n): 21de3fe13e0
