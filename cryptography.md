@@ -146,8 +146,6 @@ picoCTF{su((3ss_(r@ck1ng_r3@_60f50766}
 
 learnt how to exploit RSA's multiplicative property to recover an encrypted password and decrypt a protected message. I also learned to reconstruct the RSA modulus using GCD from plaintext ciphertext pairs. and alot of python coding :/
 
-learnt about 
-
 ## Resources:
 
 [Breaking RSA - Computerphile](https://youtu.be/-ShwJqAalOk)
