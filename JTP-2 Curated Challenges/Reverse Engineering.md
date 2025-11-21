@@ -555,7 +555,7 @@ print(flag)
 
 Running the script produced the flag.
 
-<img width="760" height="87" alt="image" src="https://github.com/user-attachments/assets/fd87d139-5c3b-43e8-9472-9284e27854bf" />
+<img width="718" height="80" alt="image" src="https://github.com/user-attachments/assets/9f0e1e24-4b54-494e-8c13-92bf0f5a05d2" />
 
 ## Flag:
 
