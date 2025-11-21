@@ -424,3 +424,156 @@ learned how predictable random number generation using srand(time(0)) and rand()
 https://dogbolt.org/?id=ab5d7224-ce7d-49c3-99e0-bdc807cf4d52#Hex-Rays=137
 
 ***
+
+# 4. VeridisQuo.apk
+
+> 
+
+## Solution:
+
+I start by examining the source code of the provided APK file. In the `MainActivity.java` file, I noted that the application immediately calls a `cleanUp()` method from `Utilities.java` and sets the text to "Too slow!!".
+
+```java
+package byuctf.downwiththefrench;
+
+import android.os.Bundle;
+import android.widget.TextView;
+import androidx.appcompat.app.AppCompatActivity;
+
+public class MainActivity extends AppCompatActivity {
+    /* access modifiers changed from: protected */
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+        new Utilities(this).cleanUp();
+        ((TextView) findViewById(R.id.homeText)).setText("Too slow!!");
+    }
+}
+```
+
+The `Utilities.java` file showed that `cleanUp()` clears the text of 28 TextViews (`flagPart1` to `flagPart28`).
+
+```java
+package byuctf.downwiththefrench;
+
+import android.app.Activity;
+import android.widget.TextView;
+
+public class Utilities {
+    private Activity activity;
+
+    public Utilities(Activity activity2) {
+        this.activity = activity2;
+    }
+
+    public void cleanUp() {
+        ((TextView) this.activity.findViewById(R.id.flagPart1)).setText("");
+        ((TextView) this.activity.findViewById(R.id.flagPart2)).setText("");
+        ((TextView) this.activity.findViewById(R.id.flagPart3)).setText("");
+        ((TextView) this.activity.findViewById(R.id.flagPart4)).setText("");
+        ((TextView) this.activity.findViewById(R.id.flagPart5)).setText("");
+        ((TextView) this.activity.findViewById(R.id.flagPart6)).setText("");
+        ((TextView) this.activity.findViewById(R.id.flagPart7)).setText("");
+        ((TextView) this.activity.findViewById(R.id.flagPart8)).setText("");
+        ((TextView) this.activity.findViewById(R.id.flagPart9)).setText("");
+        ((TextView) this.activity.findViewById(R.id.flagPart10)).setText("");
+        ((TextView) this.activity.findViewById(R.id.flagPart11)).setText("");
+        ((TextView) this.activity.findViewById(R.id.flagPart12)).setText("");
+        ((TextView) this.activity.findViewById(R.id.flagPart13)).setText("");
+        ((TextView) this.activity.findViewById(R.id.flagPart14)).setText("");
+        ((TextView) this.activity.findViewById(R.id.flagPart15)).setText("");
+        ((TextView) this.activity.findViewById(R.id.flagPart16)).setText("");
+        ((TextView) this.activity.findViewById(R.id.flagPart17)).setText("");
+        ((TextView) this.activity.findViewById(R.id.flagPart18)).setText("");
+        ((TextView) this.activity.findViewById(R.id.flagPart19)).setText("");
+        ((TextView) this.activity.findViewById(R.id.flagPart20)).setText("");
+        ((TextView) this.activity.findViewById(R.id.flagPart21)).setText("");
+        ((TextView) this.activity.findViewById(R.id.flagPart22)).setText("");
+        ((TextView) this.activity.findViewById(R.id.flagPart23)).setText("");
+        ((TextView) this.activity.findViewById(R.id.flagPart24)).setText("");
+        ((TextView) this.activity.findViewById(R.id.flagPart25)).setText("");
+        ((TextView) this.activity.findViewById(R.id.flagPart26)).setText("");
+        ((TextView) this.activity.findViewById(R.id.flagPart27)).setText("");
+        ((TextView) this.activity.findViewById(R.id.flagPart28)).setText("");
+    }
+}
+
+```
+
+then I note that the flag characters were present in the layout XML file (`res/layout/activity_main.xml`) before being cleared at runtime, so I inspected the XML file and found that each `TextView` contained a single character of the flag. but the main issue was that the IDs were not in order ,e.g., `flagPart1` was `}`. so it can be like that flagPart1 might be the last character...
+
+Now, I note that the characters were positioned using `layout_marginBottom` for Y-axis and `layout_marginEnd` for X-axis. then I compared them I noticed the characters naturally formed two shapes,i.e, a vertical column and a horizontal row. The ones with higher X-values were stacked top to bottom, so I sort those by their Y-coordinate. The rest were spread left to right, so I sort them by their X-coordinate.
+
+I wrote a Python script to reconstruct the flag based on the visual layout of the characters. It had consisted of two parts:
+A vertical column on the left (sorted by Y-coordinate).
+A horizontal row on the right (sorted by X-coordinate).  
+
+```python
+flag_parts = [
+    # (id, marginEnd, marginBottom, text)
+    (1, 216, 420, "}"),
+    (2, 340, 616, "t"),
+    (3, 332, 556, "a"),
+    (4, 368, 676, "y"),
+    (5, 252, 500, "c"),
+    (6, 348, 636, "c"),
+    (7, 364, 436, "d"),
+    (8, 348, 496, "r"),
+    (9, 336, 536, "n"),
+    (10, 360, 456, "i"),
+    (11, 276, 536, "0"),
+    (12, 340, 516, "d"),
+    (13, 232, 460, "k"),
+    (14, 356, 656, "u"),
+    (15, 320, 452, "p"),
+    (16, 352, 476, "o"),
+    (17, 300, 500, "c"),
+    (18, 332, 596, "f"),
+    (19, 308, 484, "e"),
+    (20, 328, 436, "_"),
+    (21, 292, 516, "e"),
+    (22, 284, 536, "_"),
+    (23, 268, 536, "f"),
+    (24, 316, 468, "i"),
+    (25, 260, 516, "_"),
+    (26, 240, 480, "4"),
+    (27, 224, 440, "e"),
+    (28, 324, 576, "{"),
+]
+
+vertical = [p for p in flag_parts if p[1] >= 324]
+horizontal = [p for p in flag_parts if p[1] < 324]
+
+vertical_sorted = sorted(vertical, key=lambda x: -x[2])
+
+horizontal_sorted = sorted(horizontal, key=lambda x: -x[1])
+
+# 'b' comes from homeText
+flag = "b" + "".join([p[3] for p in vertical_sorted]) + "".join([p[3] for p in horizontal_sorted])
+print(flag)
+```
+
+Running the script produced the flag.
+
+<img width="760" height="87" alt="image" src="https://github.com/user-attachments/assets/fd87d139-5c3b-43e8-9472-9284e27854bf" />
+
+## Flag:
+
+```
+byuctf{android_piece_0f_c4ke}
+```
+
+## Concepts learnt:
+
+understood how android layouts works and how code interacts with UI elements and extracting information directly from resource files without running the app. 
+
+## Notes:
+
+initially I constructed the flag with using the literally positions referred by the flagpart, but then on checking that didnt make any sense and flags normally do make sense, so I dived deeper into how to unscramle the text.
+I chose 324 as the split because all vertical chars had marginEnd ≥ 324, while every horizontal one was clearly below it.
+
+
+
+## Resources:
+
+(https://developer.android.com/develop/ui/views/layout/declaring-layout)  
