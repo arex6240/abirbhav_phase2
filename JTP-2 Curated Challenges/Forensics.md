@@ -33,7 +33,7 @@ https://github.com/brannondorsey/naive-hashcat/releases/download/data/rockyou.tx
 
 ***
 
-# 2. 
+# 2. Nutrela Chunks
 
 > Description:
 One of my favorite foods is soya chunks. But as I was enjoying some Nutrela today, I noticed a few chunks weren’t quite right. Seems like something’s off with their structure. Could you help me fix these broken chunks so I can enjoy my meal again?
