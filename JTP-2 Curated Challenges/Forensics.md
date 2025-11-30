@@ -103,3 +103,307 @@ learnt the criticality of IHDR, IDAT, IEND chunks and also about its case sensit
 
 
 ***
+
+# 3. RAR of the Abyss
+
+> Description:
+Two philosophers peer into the networked abyss and swap a secret. Use the secret to decrypt the Abyss’ RAwR and pull your flag from the void.
+
+## Solution:
+
+Loaded up the `abyss.pcap` inside wireshark to see its contents. Since the name of the challenge contains the word RAR, I assumed that something has to be linked with RAR. So next I try opening the file with WinRAR, which when I do it asked me for a password. hmmmm interesting....
+
+<img width="334" height="374" alt="image" src="https://github.com/user-attachments/assets/f8b32d5e-1bca-4c0a-a74f-64e59ce4ab3e" />
+
+
+Next I go on a hunt for the password. 
+I cat into the file to get something like this 
+
+```
+abirbhav@ROG-STRIX-G713IE:/mnt/f/abirbhav_phase2/challs/forensics/3 RAR of the Abyss$ cat abyss.pcap
+�ò������h�55������]٧E'@c�
+
+[�pingrequest���h�33������]٧E%@c�
+
+�[pingreply���hZ66������]٧E(@f�
+
+
+�       P��P �y���h�66������]٧E(@f�
+
+
+P�      ����P ����he66������]٧E(@f�
+
+
+�       P����P ����h�qq������]٧Ec@fw
+
+
+�       P����P ��Camus: One must imagine Sisyphus happy but are we happy ?
+���h�66������]٧E(@f�
+
+
+P�      ���-P U���hi66������]٧E(@f�
+
+
+�       P�-��P T���h�66������]٧E(@f�
+
+
+P�      ���.P T���hG66������]٧E(@f�
+
+
+�
+P��P �w���h�66������]٧E(@f�
+
+
+P�
+����P ����h␦66������]٧E(@f�
+
+
+�
+P����P ����h�qq������]٧Ec@fw
+
+
+�
+P����P �Nietzsche: You will be happy after reading my latest work
+���hK66������]٧E(@f�
+
+
+P�
+���.P R���h�66������]٧E(@f�
+
+
+�
+P�.��P Q���h,66������]٧E(@f�
+
+
+P�
+���/P Q���h@TT������]٧EF@e�
+
+
+�
+ P�O�tP �Rar!␦����!dE7�'�a�U��u�gC��f�Cܣ�_R�wOdp��&���ka*�sG����ѐqxr��]�_���o�
+                                                                              ᖲ�[*���V�DP��k�T�w~�ǖ�����1���:o:��KOd�q�9���Z��.��|�aY�R��[�q8����}��A�!\�E�7L!�|��/�����ک))�{ja�ڝ��t���=����
+                                           ���Aѝ%
+                                                 X�������ϧ�y��k�q2�ģ�Ku��v
+                                                                          g���\y{׽���R�J���hU66������]٧E(@f�
+
+
+�
+ P��P �s���h66������]٧E(@f�
+
+
+P�
+  ����P ����h466������]٧E(@f�
+
+
+�
+ P����P ����h�SS������]٧EE@f�
+
+
+�
+ P����P F0Camus: whats the password ?
+���hP66������]٧E(@f�
+
+
+P�
+  ���P j���h�66������]٧E(@f�
+
+
+�
+ P���P i���h%66������]٧E(@f�
+
+
+P�
+  ���P i���h�66������]٧E(@f�
+
+
+P��P �q���h�66������]٧E(@f�
+
+
+����P ����h|66������]٧E(@f�
+
+
+P����P ����hTT������]٧EF@f�
+
+
+P����P u�Nietzsche: b3y0ndG00dand3vil
+���h�66������]٧E(@f�
+
+
+���P f���h66������]٧E(@f�
+
+
+P���P e���h�66������]٧E(@f�
+
+
+���P e���h66������]٧E(@f�
+
+
+�P��P �o���hT66������]٧E(@f�
+
+
+P�����P ����h�66������]٧E(@f�
+
+
+�P����P ����h'EE������]٧E7@f�
+
+
+�P����P j
+Camus: thanks
+���h66������]٧E(@f�
+
+
+P����P r���hJ66������]٧E(@f�
+
+
+�P���P q���h�66������]٧E(@f�
+
+
+P����P q���h+**������B�
+
+���**B�B�
+       B�
+
+B�
+���hr55������]٧E'@c�
+
+[pingrequest���h33������]٧E%@c�
+
+        �pingreply���hP[[^��]٧EM@ފ�
+����ul9��SSDP: M-SEARCH * HTTP/1.1
+Man: "ssdp:discover"
+���hPP������]٧EB@ޕ�����
+lu.     HTTP/1.1 200 OK
+ST: upnp:rootdevice
+���h�[[^��]٧EM@މ�
+                 ����vl9��SSDP: M-SEARCH * HTTP/1.1
+Man: "ssdp:discover"
+���hCPP������]٧EB@ޔ�����
+                        lv.HTTP/1.1 200 OK
+ST: upnp:rootdevice
+���h**������B�
+            B�
+
+
+
+���hM**B�
+         B�
+B�
+
+
+5�L%�CDNS_RESP:host12.local:1.2.3.4���h55������]٧E'@c�
+
+pingrequest���ha33������]٧E%@c�
+(
+pingreply���h�[[^��]٧EM@ޅ�����zl9��SSDP: M-SEARCH * HTTP/1.1
+Man: "ssdp:discover"
+���hMPP������]٧EB@ސ�����lz.�HTTP/1.1 200 OK
+ST: upnp:rootdevice
+���h**������B�
+
+���h�**B�B�
+B�
+���h55������]٧E'@c�
+
+[�pingrequest���h�33������]٧E%@c�
+1
+�Kpingreply���h@@������]٧E2@��Q5�pDNS_QUERY:host17.local���h�GG������]٧E9��5�Q%�4DNS_RESP:host17.local:1.2.3.4���h+55������]٧E'@c�
+
+[�pingrequest���hv33������]٧E%@c�
+7
+�Ipingreply���h�**������B�
+
+���h'**B�B�
+B�
+���h�@@������]٧E2@��T5�nDNS_QUERY:host20.local���h5GG������]٧E9��5�T%+DNS_RESP:host20.local:1.2.3.4���h@@������]٧E2@��U5�jDNS_QUERY:host21.local���hlGG������]٧E9��5�U%�'DNS_RESP:host21.local:1.2.3.4���h
+**������B�
+
+���hk**B���
+�
+���h@@������]٧E2@��W5�bDNS_QUERY:host23.local���hjGG������]٧E9��5�W%�!DNS_RESP:host23.local:1.2.3.4���h**������B�
+
+���hf**B�B�
+B�
+���h55������]٧E'@cp
+␦
+[�pingrequest���h<33������]٧E%@cr
+L
+␦�Bpingreply���[[^��]٧EM@�y�����l9��SSDP: M-SEARCH * HTTP/1.1
+Man: "ssdp:discover"
+���h�PP������]٧EB@ބ������.�HTTP/1.1 200 OK
+ST: upnp:rootdevice
+���h'55������]٧E'@ch
+
+[�ingrequest���hg33������]٧E%@cj
+R
+�@ingreply���h�**������B�
+
+"���h**B�BB�!
+"B�
+���h�55������]٧E'@c`
+
+[�pingrequest���hc33������]٧E%@cb
+X
+�>pingreply���h�55������]٧E'@c\
+
+[�pingrequest���h�33������]٧E%@c^
+[
+�=pingreply���h@@������]٧E2@�� �_5�LDNS_QUERY:host31.local���hGG������]٧E9 �� 5�_%DNS_RESP:host31.local:1.2.3.4���h**������BB�
+!
+&���h�**B� BB�%
+&B�
+!���hW**������BB�!
+"
+'���h�**B�!BB�&
+'B�!
+"���h%55������]٧E'@cL
+#
+[�"pingrequest���h33������]٧E%@cN
+g
+#�9"pingreply���ht[[^��]٧EM@�p�$�����l9��SSDP: M-SEARCH * HTTP/1.1
+Man: "ssdp:discover"
+���h:PP������]٧EB@�{�����$l�.�HTTP/1.1 200 OK
+ST: upnp:rootdevice
+���h�**������BB�$
+%
+*���hi**B�$BB�)
+*B�$
+%���h�[[^��]٧EM@�n�&�����l9��SSDP: M-SEARCH * HTTP/1.1
+Man: "ssdp:discover"
+���hqPP������]٧EB@�y�����&l�.�HTTP/1.1 200 OK
+ST: upnp:rootdevice
+���h@@������]٧E2@��'�f5�0DNS_QUERY:host38.local���h�GG������]٧E9'��'5�f%��DNS_RESP:host38.local:1.2.3.4���h�**������BB�'
+(
+-���h�**B�'BB�,
+-B�'
+(���h[[[^��]٧EM@�k�)�����l9��SSDP: M-SEARCH * HTTP/1.1
+Man: "ssdp:discover"
+���hPP������]٧EB@�v�����)l�.�HTTP/1.1 200 OK
+ST: upnp:rootdevice
+���h�@@������]٧E2@��*�i5�.DNS_QUERY:host41.local���hfGG������]٧E9*��*5�i%��DNS_RESP:host41.local:1.2.3.4
+```
+
+from the conversation it is clearly visible (unencrypted) that the password is `b3y0ndG00dand3vil`. I put this password for WinRAR next to find the flag inside it. lesssgoo
+
+<img width="778" height="407" alt="image" src="https://github.com/user-attachments/assets/341a3354-ba0c-4b68-949f-e68260c448af" />
+
+
+## Flag:
+
+```
+nite{thus_sp0k3_th3_n3tw0rk_f0r3ns1cs_4n4lyst}
+```
+
+## Concepts learnt:
+
+opening pcap file with WinRAR for the flag. Hunting for the password in the conversation. 
+
+## Notes:
+
+--
+
+## Resources:
+
+--
+
+***
+
