@@ -407,3 +407,53 @@ opening pcap file with WinRAR for the flag. Hunting for the password in the conv
 
 ***
 
+# 4. NineTails
+
+> Description:
+Looks like I got a little too clever and hid the flag as a password in Firefox, tucked away like one of NineTails’ many tails. Recover the "logins" and the "key4" and let it guide you to the flag.
+Hint:
+I named my Ninetails "j4gjesg4", quite a peculiar name isn't it?
+
+## Solution:
+
+For this challenge we get an `.ad1` file, which is a forensic disk image created by AccessData tools. So I download Accessdata FTK Imager to read this. 
+
+Opening the file I see the disk image, and then I export the disk contents
+
+then in the description of the challenge it is clearly mentioned now on what to do next which is the flag is hidden in the saved login portion of the profile `j4gjesg4`. So I load the contents of this session into a new profile inside Firefox. Doing that I see the following: 
+
+<img width="696" height="350" alt="image" src="https://github.com/user-attachments/assets/cdea522b-93c0-417a-acd7-6733c64b6359" />
+
+
+<img width="694" height="347" alt="image" src="https://github.com/user-attachments/assets/16bbb0a8-b6c5-47a2-8da2-e74e5d92dc96" />
+
+
+<img width="696" height="301" alt="image" src="https://github.com/user-attachments/assets/975e72d1-248e-40fb-8254-6e420dc3609b" />
+
+
+
+Therefore clearly the decoded flag is : `GCTF{m0zarella_f1ref0x_p4ssw0rd}`
+
+
+## Flag:
+
+```
+GCTF{m0zarella_f1ref0x_p4ssw0rd}
+```
+
+## Concepts learnt:
+
+Learnt about disk images and how it is created and accessed using FTK Imager Tool.
+
+## Notes:
+
+downloaded a wrong software to access the .ad1 file which wasted a lot of time guessworking if the software is faulty or .ad1 file is. Guess it was the prior one. 
+
+## Resources:
+
+https://www.youtube.com/watch?v=CPup3ClC7nE  
+https://www.exterro.com/digital-forensics-software/ftk-imager
+
+
+***
+
