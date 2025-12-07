@@ -457,3 +457,99 @@ https://www.exterro.com/digital-forensics-software/ftk-imager
 
 ***
 
+# 5 Redraw
+
+>Her screen went black and a strange command window flickered to life, lines of text flashed across before everything went silent. Moments later, the system crashed. By sheer luck, we recovered a memory dump. 
+Note: There are three stages to this challenge and you will find three flags.
+What we know: just before the crash, a black command window flickered across the screen, something in its output might still be visible if you dig through memory. She was drawing when it happened, and remnants of a painting program linger, which could reveal more if inspected in the right way. Finally, a mysterious archive hides deeper in memory, likely holding the last piece of her work.
+Hint:
+Learn up on volatility 2 and its various plugins and what they are used for.
+
+## Solution
+First, we need to identify the operating system profile of the memory dump to use with Volatility plugins.
+
+```bash
+volatility -f MemoryDump_Lab1.raw imageinfo
+```
+```
+Volatility Foundation Volatility Framework 2.6.1
+INFO    : volatility.debug    : Determining profile based on KDBG search...
+          Suggested Profile(s) : Win7SP1x64, Win7SP0x64, Win2008R2SP0x64, Win2008R2SP1x64_24000, Win2008R2SP1x64_23418, Win2008R2SP1x64, Win7SP1x64_24000, Win7SP1x64_23418
+                     AS Layer1 : WindowsAMD64PagedMemory (Kernel AS)
+                     AS Layer2 : FileAddressSpace (/mnt/f/abirbhav_phase2/challs/forensics/5 Redraw/MemoryDump_Lab1.raw)
+                      PAE type : No PAE
+                           DTB : 0x187000L
+                          KDBG : 0xf800028100a0L
+          Number of Processors : 1
+     Image Type (Service Pack) : 1
+                KPCR for CPU 0 : 0xfffff80002811d00L
+             KUSER_SHARED_DATA : 0xfffff78000000000L
+           Image date and time : 2019-12-11 14:38:00 UTC+0000
+     Image local date and time : 2019-12-11 20:08:00 +0530
+```
+The suggested profile is `Win7SP1x64`.
+
+FOR FIRST FLAG:  
+The description mentions a "strange command window" and "lines of text". I investigate the command history using the `consoles` plugin.
+
+```bash
+volatility -f MemoryDump_Lab1.raw --profile=Win7SP1x64 consoles
+```
+
+I found a command executed in `cmd.exe`: `St4G3$1`.
+The output contained a Base64 encoded string: `ZmxhZ3t0aDFzXzFzX3RoM18xc3Rfc3Q0ZzMhIX0=`
+
+Decoding this string gives the first flag:
+`flag{th1s_1s_th3_1st_st4g3!!}`  
+
+FOR SECOND FLAG:  
+The description states "She was drawing when it happened". I look for a running paint process (`mspaint.exe`).
+
+```bash
+volatility -f MemoryDump_Lab1.raw --profile=Win7SP1x64 pslist | grep mspaint
+```
+I find that `mspaint.exe` was running with PID `2424`.
+
+I dump the memory of this process to analyze the artifacts:
+```bash
+volatility -f MemoryDump_Lab1.raw --profile=Win7SP1x64 memdump -p 2424 -D .
+```
+
+The dumped memory file (`2424.dmp`) was renamed to `.data` and opened in GIMP as "Raw Image Data". By adjusting the width and offset, the image on the canvas was reconstructed, which then revealed the flag which is `flag{G00d_Boy_good_girL}`
+
+FOR THIRD FLAG:  
+The description hints at a "mysterious archive" hiding deeper in memory. I scan for RAR files.
+
+```bash
+volatility -f MemoryDump_Lab1.raw --profile=Win7SP1x64 filescan | grep .rar
+```
+I found `\Device\HarddiskVolume2\Users\Alissa Simpson\Documents\Important.rar` at physical offset `0x000000003fa3ebc0`.
+
+I dump the file:
+```bash
+volatility -f MemoryDump_Lab1.raw --profile=Win7SP1x64 dumpfiles -Q 0x000000003fa3ebc0 -D .
+```
+
+The extracted RAR file is password protected. To find the password, I dump the user password hashes:
+```bash
+volatility -f MemoryDump_Lab1.raw --profile=Win7SP1x64 hashdump
+```
+therefore I get:  
+`Alissa Simpson:1003:aad3b435b51404eeaad3b435b51404ee:f4ff64c8baac57d22f22edc681055ba6:::`
+
+The NTLM hash `f4ff64c8baac57d22f22edc681055ba6` (converted to uppercase) is the password. Using this password, I extracted `flag3.png` from the archive.
+
+<img width="500" height="500" alt="image" src="https://github.com/user-attachments/assets/ae4d711f-211a-4bd2-8f7a-a1240eb81ac8" />
+
+
+## Flags
+`flag{th1s_1s_th3_1st_st4g3!!}`  
+`flag{G00d_Boy_good_girL}`  
+`flag{w3ll_3rd_stage_was_easy}`  
+
+## Concepts Learnt
+
+learnt about volatility framework and using plugins like imageinfo consoles pslist etc. learnt to reconstruct images from raw memory dumps. Extracting NTLM hashes from memory to bypass password protection.
+
+## Resources
+[Volatility Command Reference](https://github.com/volatilityfoundation/volatility/wiki/Command-Reference)  
