@@ -316,6 +316,78 @@ https://dogbolt.org/?id=99490316-af5f-4ae8-8dde-33045e08d271#Hex-Rays=64
 > 
 
 ## Solution:
+
+I loaded up the program in a decompiler to see what's there. I found the `main()` function which shows how the program works:
+
+```c
+int __fastcall main(int argc, const char **argv, const char **envp)
+{
+  unsigned int v3; // eax
+  int v5; // [rsp+10h] [rbp-10h] BYREF
+  int v6; // [rsp+14h] [rbp-Ch]
+  unsigned __int64 v7; // [rsp+18h] [rbp-8h]
+
+  v7 = __readfsqword(0x28u);
+  v3 = time(0);
+  srand(v3);
+  v6 = rand();
+  puts("Welcome to the number guessing game!");
+  puts("I'm thinking of a number. Can you guess it?");
+  puts("Guess right and you get a flag!");
+  printf("Enter your number: ");
+  fflush(stdout);
+  __isoc99_scanf("%u", &v5);
+  printf("Your guess was %u.\n", v5);
+  printf("Looking for %u.\n", v6);
+  fflush(stdout);
+  if ( v6 == v5 )
+  {
+    puts("You won. Guess was right! Here's your flag:");
+    giveFlag();
+  }
+  else
+  {
+    puts("Sorry. Try again, wrong guess!");
+  }
+  fflush(stdout);
+  return 0;
+}
+```
+
+After analyzing the code, I see that the program uses `srand(time(0))` to seed the random number generator, then immediately calls `rand()` to get the secret number. This is predictable because `time(0)` returns the number of seconds since Unix epoch.
+
+The  pathway should be to use GDB to read the random number from memory or a register before we provide our input.
+
+I started GDB and set a breakpoint at `__isoc99_scanf`:
+
+```bash
+$ gdb ./time
+(gdb) break __isoc99_scanf
+Breakpoint 1 at 0x400780
+(gdb) run
+```
+
+When the breakpoint hits (right before scanf asks for input), the random number `v6` is already stored in memory at `[rbp-0xC]`. I read it:
+
+```bash
+(gdb) up
+#1  0x00000000004009d2 in main ()
+(gdb) x/d $rbp-0xc
+0x7fffffffdd84: 1804289383
+(gdb) continue
+```
+
+Then I entered the number I just read (1804289383), and got the success message:
+
+```
+Your guess was 1804289383.
+Looking for 1804289383.
+You won. Guess was right! Here's your flag:
+Flag file not found!  Contact an H3 admin for assistance.
+```
+
+
+## Alternate Solution:
 I load up the program in decompiler to see whats there. Then I find two useful functions from there `main()` and `giveFlag()` 
 
 ```c
