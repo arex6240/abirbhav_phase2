@@ -577,3 +577,136 @@ I chose 324 as the split because all vertical chars had marginEnd ≥ 324, while
 ## Resources:
 
 (https://developer.android.com/develop/ui/views/layout/declaring-layout)  
+
+***
+
+# 5. Dusty
+
+## Solution:
+
+### dust_noob
+The `dust_noob` binary contains a `shinyclean::main` function that initializes a byte array and XORs it with `0x3F`. By replicating this logic in a py script, we can decrypt the flag.
+
+```python
+v3 = [0] * 23
+initial_str = "{^HX|kyDym"
+for i, c in enumerate(initial_str):
+    v3[i] = ord(c)
+
+v3[10] = 12
+v3[11] = 12
+v3[12] = 96
+v3[13] = 124
+v3[14] = 11
+v3[15] = 109
+v3[16] = 96
+v3[17] = 104
+v3[18] = 11
+v3[19] = 10
+v3[20] = 119
+v3[21] = 30
+v3.append(0x42) # v4[0] is 'B'
+
+s = []
+for x in v3:
+    s.append(chr(x ^ 0x3F))
+
+print("".join(s))
+```
+<img width="821" height="45" alt="image" src="https://github.com/user-attachments/assets/7ef57292-41c2-4847-b3c4-d04d6f4a2bed" />
+
+### dust_intermediate
+The `dust_intermediate` binary hides its password check in a tricky way.
+The program has two parts running at the same time (threads). When I type a character, the main part sends it to a worker thread. The worker thread keeps track of a running total and uses it to look up a value in a special lookup table called an S-box (which has 256 numbers in it). It then checks if that value matches what it expects.
+To solve this, I found the S-box data in the binary file (at position `0x61298`) and the list of expected values from the code. Then I reverse the process like for each expected value, we found where it appears in the S-box, compared it to the previous position, and that difference gave us the original character i need to type.
+
+```python
+import sys
+
+def read_bytes(filepath, offset, length):
+    with open(filepath, 'rb') as f:
+        f.seek(offset)
+        data = f.read(length)
+        return list(data)
+
+offset = 0x61298
+s_box = read_bytes('dust_intermediate', offset, 256)
+
+# Create inverse S-box
+s_inv = [0] * 256
+for i, x in enumerate(s_box):
+    s_inv[x] = i
+
+target_bytes = [
+    0xEA, 0xD9, 0x31, 0x22, 0xD3, 0xE6, 0x97, 0x70,
+    0x16, 0xA2, 0xA8, 0x1B, 0x61, 0xFC, 0x76, 0x68,
+    0x7B, 0xCB, 0xB8, 0x27, 0x96
+]
+
+v12_prev = 117
+flag = []
+
+for b in target_bytes:
+    v12 = s_inv[b]
+    c = (v12 - v12_prev) % 256
+    flag.append(chr(c))
+    v12_prev = v12
+
+print("".join(flag))
+```
+<img width="892" height="482" alt="image" src="https://github.com/user-attachments/assets/bbe95a20-0208-457d-af92-fb163b68ea8b" />
+
+### dust_pro
+The `dust_pro` binary asks us to enter a number. It then takes that number and breaks it down into 4 bytes. These 4 bytes become a key that repeats over and over to decrypt a hidden message using XOR.
+
+At first, I thought I'd have to try to bruteforce, But then I realized that since CTF flags always start with `DawgCTF{` (like the previous flags), so I knew the decrypted message had to start with "Dawg". So if the encrypted bytes XOR the key gives me "Dawg", then the encrypted bytes XOR "Dawg" gives me the key
+
+hence I took the first 4 encrypted bytes from the target array and XORed them with "Dawg". This gave me the 4-byte key: `0x8b, 0x68, 0x69, 0xd4`. after I had the key, I just repeated it to decrypt the entire flag.
+
+```python
+target = [
+    0xcf, 0x9, 0x1e, 0xb3, 0xc8, 0x3c, 0x2f, 0xaf, 
+    0xbf, 0x24, 0x25, 0x8b, 0xd9, 0x3d, 0x5c, 0xe3, 
+    0xd4, 0x26, 0x59, 0x8b, 0xc8, 0x5c, 0x3b, 0xf5, 
+    0xf6
+]
+
+key = [0x8b, 0x68, 0x69, 0xd4]
+
+flag = []
+for i, b in enumerate(target):
+    flag.append(chr(b ^ key[i % 4]))
+
+print("".join(flag))
+```
+<img width="820" height="44" alt="image" src="https://github.com/user-attachments/assets/4b9ed91c-2b7f-4dd8-96fc-733f053d1e36" />
+
+
+## Flag:
+
+```
+DawgCTF{FR33_C4R_W45H!?}
+DawgCTF{S0000_CL4?B!}
+DawgCTF{4LL_RU57_N0_C4R!}
+```
+
+## Concepts learnt:
+
+Spotting and undoing simple tricks like XOR and lookup tables  
+Getting secret data out of the program files  
+Finding where the program checks for the right answer  
+Using what I know about flag formats to make guessing easier  
+
+
+## Notes:
+
+few deadends I reached are that I tried to Brute-force the flag or key instead of analyzing the code.Searched  for flag strings directly in the binaries with `strings` or `grep`. Looked for hardcoded answers or clues in error messages or unused functions.
+
+
+
+## Resources:
+
+Hex-Rays Decompiler  
+`objdump`
+
+***
